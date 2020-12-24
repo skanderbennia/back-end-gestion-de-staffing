@@ -1,0 +1,35 @@
+{
+  "name": "back-end-gestion-de-staffing",
+  "version": "1.0.0",
+  "description": "gestion de staffing: coté administrateur : gestion des tâches et affectation des taches aux membres gestion des membres gestion d'équipes coté membre: un membre peut se connecter pour lister les tâches que l'administrateur lui a demander et la mettre terminer s'il l'a terminé les technologies qu'on va utiliser: MongoDB,nodeJs,expressJS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skanderbennia/back-end-gestion-de-staffing.git"
+  },
+  "author": "Skander Bennia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skanderbennia/back-end-gestion-de-staffing/issues"
+  },
+  "homepage": "https://github.com/skanderbennia/back-end-gestion-de-staffing#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.21.5",
+    "prettier": "^2.2.1"
+  }
+}
