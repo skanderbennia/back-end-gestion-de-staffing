@@ -1,4 +1,4 @@
-const Groupe = require("./../models/equipeModel")
+const Groupe = require("./../models/groupeModel")
 
 
 
