@@ -15,6 +15,15 @@ const userSchema = mongoose.Schema({
         type:Number,
         required:[true,'vous devez entre l age']
     },
+    specialite:{
+        type:String,
+        trim:true
+    },
+    photoProfil:{
+        type:String,
+        trim:true
+    }
+    
     //im making test here but this schema need to be heavy
 
     
