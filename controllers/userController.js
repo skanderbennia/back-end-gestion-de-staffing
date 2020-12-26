@@ -1,9 +1,22 @@
 const User = require("./../models/userModel")
-
-
+//we call this an alias and you need to configure this middleware in the router before get all user
+const APIFeatures = require("./../utils/apiFeatures")
+exports.aliasUserFiveFirst = (req,res,next)=>{
+    req.query.limit = '5',
+    req.query.sort = '-nom'
+    req.query.fields = 'nom email'
+    next()
+}
 exports.getAllUsers = async(req,res)=>{
     try{
-        users = await User.find()
+        const features = new APIFeatures(User.find(),req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .pagination()
+
+        const users = await features.query
+        //send the query
         res.status(200).json({
             status:'success',
             dataLength:users.length,

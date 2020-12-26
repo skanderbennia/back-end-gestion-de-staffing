@@ -4,7 +4,8 @@ const {
     createUser,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    aliasUserFiveFirst
 } 
 = require("./../controllers/userController")
 
@@ -13,6 +14,10 @@ const {
 
 
 const router = express.Router()
+//they are not the top but i m just naming it like that
+router.route("/top-5-user")
+.get(aliasUserFiveFirst,getAllUsers)
+
 
 router.route('/')
 .get(getAllUsers)
