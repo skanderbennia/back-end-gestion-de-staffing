@@ -4,7 +4,8 @@ const morgan = require("morgan")
 const userRouter = require("./routes/userRouter")
 const adminRouter = require("./routes/adminRouter")
 const groupeRouter = require("./routes/groupeRouter")
-
+const AppError = require('./utils/appError')
+const globalErrorHandler = require("./controllers/errorController")
 const app = express()
 
 
@@ -31,25 +32,13 @@ app.use('/api/v1/admins',adminRouter)
 app.use('/api/v1/groupes',groupeRouter)
 
 app.all('*',(req,res,next)=>{
-    // res.status(404).json({
-    //     status:"fail",
-    //     message: `can't find ${req.originalUrl} on this server`
-    // })
-    const err = new Error( `can't find ${req.originalUrl} on this server`)
-    err.status='fail',
-    err.statusCode = 404
     
-    next(err)
-})
-app.use((err,req,res,next)=>{
-    err.statusCode = err.statusCode||500;
+    // const err = new Error( `can't find ${req.originalUrl} on this server`)
+    // err.status='fail',
+    // err.statusCode = 404
     
-    err.status = err.status || 'error'
-
-    res.status(err.statusCode).json({
-        status:err.status,
-        message:err.message
-    })
+    next(new AppError( `can't find ${req.originalUrl} on this server`,404))
 })
+app.use(globalErrorHandler)
 
 module.exports = app;
