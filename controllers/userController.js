@@ -2,6 +2,7 @@ const User = require("./../models/userModel")
 //we call this an alias and you need to configure this middleware in the router before get all user
 const APIFeatures = require("./../utils/apiFeatures")
 const catchAsync = require('./../utils/catchAsync')
+const AppError = require('./../utils/appError')
 
 exports.aliasUserFiveFirst = (req,res,next)=>{
     req.query.limit = '5',
@@ -30,8 +31,11 @@ exports.getAllUsers = catchAsync(async(req,res,next)=>{
 })
 
 exports.getUser = catchAsync(async(req,res,next)=>{
- 
+    
         const user = await User.findById(req.params.id) 
+        if(!user){
+            return next(new AppError('No user found with that ID',404))
+        }
         res.status(200).json({
             status:"success",
             user:user
@@ -50,6 +54,9 @@ exports.updateUser = catchAsync(async(req,res,next)=>{
             new:true,
             runValidators:true
         })
+        if(!user){
+            return next(new AppError('No user found with that ID',404))
+        }
         res.status(200).json({
             status:"success",
             user:user
@@ -59,7 +66,11 @@ exports.updateUser = catchAsync(async(req,res,next)=>{
     
 exports.deleteUser = catchAsync(async(req,res,next)=>{ 
  
-    await User.findByIdAndDelete(req.params.id)
+    const user = await User.findByIdAndDelete(req.params.id)
+
+    if(!user){
+        return next(new AppError('No user found with that ID',404))
+    }
       res.status(200).json({
      status:"success",
     })
