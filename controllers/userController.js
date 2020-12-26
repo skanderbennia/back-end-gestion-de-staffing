@@ -144,3 +144,23 @@ exports.getUserStat = async(req,res)=> {
         })
     }
 }
+//get user per date (month)we call this unwind
+exports.getMonthlyPlan = async(req,res)=>{
+    try{
+        const year = req.params.year*1
+        const plan = await User.aggregate([
+            {
+                $unwind:"$createdAt"
+            }
+        ])
+        res.status(200).json({
+            status:"success",
+            plan:plan
+        }) 
+    }catch(err){
+        res.status(400).json({
+            status:"fail",
+            err:err
+        }) 
+    }
+}

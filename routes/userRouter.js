@@ -6,7 +6,8 @@ const {
     updateUser,
     deleteUser,
     aliasUserFiveFirst,
-    getUserStat
+    getUserStat,
+    getMonthlyPlan
 } 
 = require("./../controllers/userController")
 
@@ -20,6 +21,8 @@ router.route("/top-5-user")
 .get(aliasUserFiveFirst,getAllUsers)
 
 router.route("/users-stats").get(getUserStat)
+
+//router.route("/monthly-plan").get(getMonthlyPlan)
 
 
 router.route('/')
