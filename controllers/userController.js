@@ -1,6 +1,7 @@
 const User = require("./../models/userModel")
 //we call this an alias and you need to configure this middleware in the router before get all user
 const APIFeatures = require("./../utils/apiFeatures")
+const catchAsync = require('./../utils/catchAsync')
 
 exports.aliasUserFiveFirst = (req,res,next)=>{
     req.query.limit = '5',
@@ -9,8 +10,8 @@ exports.aliasUserFiveFirst = (req,res,next)=>{
     next()
 }
 
-exports.getAllUsers = async(req,res)=>{
-    try{
+exports.getAllUsers = catchAsync(async(req,res,next)=>{
+    
         const features = new APIFeatures(User.find(),req.query)
         .filter()
         .sort()
@@ -25,48 +26,26 @@ exports.getAllUsers = async(req,res)=>{
             data:{
                 users:users
             }
-        })
-    } catch(err){
-        res.status(400).json({
-            status:'fail',
-            err:err
-        })
-    }
-   
-}
-exports.getUser = async(req,res)=>{
-    try{
+        })  
+})
+
+exports.getUser = catchAsync(async(req,res,next)=>{
+ 
         const user = await User.findById(req.params.id) 
         res.status(200).json({
             status:"success",
             user:user
         })
-    }catch(err){
-        res.status(400).json({
-            status:'fail',
-            err:err
-        })
-    }
-    
-}
-exports.createUser = async(req,res)=>{
-    console.log(req.body)
-    try{
-        const user = await User.create(req.body)
+    })
+
+exports.createUser = catchAsync(async(req,res,next)=>{
+    const user = await User.create(req.body)
         res.status(201).json({
         status:'success',
-        user:user
-    })
-    }catch(err){
-        res.status(400).json({
-            status:'fail',
-            err:err
-        })
-    }
-    
-}
-exports.updateUser = async(req,res)=>{
-    try{
+        user:user})
+})
+exports.updateUser = catchAsync(async(req,res,next)=>{
+ 
         const user = await User.findByIdAndUpdate(req.params.id,req.body,{
             new:true,
             runValidators:true
@@ -75,30 +54,20 @@ exports.updateUser = async(req,res)=>{
             status:"success",
             user:user
         })
-    }catch(err){
-        res.status(400).json({
-            status:'fail',
-            err:err
-        })
-    }
-}
+   
+})
     
-exports.deleteUser = async(req,res)=>{ 
-    try{
+exports.deleteUser = catchAsync(async(req,res,next)=>{ 
+ 
     await User.findByIdAndDelete(req.params.id)
       res.status(200).json({
      status:"success",
     })
-}catch(err){
-    res.status(400).json({
-        status:"fail",
-        err:err
-    })
-}
-}
+
+})
 //this projection is used to get some stats
-exports.getUserStat = async(req,res)=> {
-    try{
+exports.getUserStat = catchAsync(async(req,res,next)=> {
+    
         //we call those pipelines aggregations
         const stats = await User.aggregate([
             
@@ -137,13 +106,8 @@ exports.getUserStat = async(req,res)=> {
                 stats:stats
             }
         })
-    }catch(err){
-        res.status(400).json({
-            status:"fail",
-            err:err
-        })
-    }
-}
+    
+})
 //get user per date (month)we call this unwind
 exports.getMonthlyPlan = async(req,res)=>{
     try{
