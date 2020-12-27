@@ -17,6 +17,12 @@ const userSchema = mongoose.Schema({
         type:String,
         //required:[true,'vous de vez entrez l email'],
         lowercase:true,
+        validate:{
+            validator:function(v){
+                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
+            },
+            message: props => `${props.value} is not a valid email!`
+        }
        
     },
     password:{
@@ -84,10 +90,10 @@ userSchema.pre('/^find/',function(next){
     this.find({secretPeople:{$ne:'true'}})
     next()
 })
-userSchema.path('email').validate(function (email) {
-    var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-    return emailRegex.test(email); // Assuming email has a text attribute
- }, 'The e-mail field cannot be empty.')
+// userSchema.path('email').validate(function (email) {
+//     var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+//     return emailRegex.test(email); // Assuming email has a text attribute
+//  }, 'The e-mail field cannot be empty.')
 
 const User = mongoose.model('User',userSchema)
 module.exports = User
