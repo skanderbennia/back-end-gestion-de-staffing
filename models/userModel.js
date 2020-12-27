@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const slugify = require("slugify")
-
+const bcrypt = require('bcrypt')
 const userSchema = mongoose.Schema({
     nom:{
         type:String,
@@ -27,16 +27,22 @@ const userSchema = mongoose.Schema({
     },
     password:{
         type:String,
-        trim:true,
         //required:[true,'vous devez entre le mot de passe']
         minlength:8,
-        select:false
         
     },
-    passowordConfirmation:{
+    passwordConfirmation:{
         type:String,
         //required:[true,"il faut entrer la confirmation de mot de passe"]
-        select:false
+        // select:false
+         validate:{
+             validator: function(el){
+                console.log(el,"  ",this.password)
+                 return el === this.password
+                 
+             },
+             message:'this is not a valid confirmation'
+         }
     },
     age:{
         type:Number,
@@ -94,6 +100,16 @@ userSchema.pre('/^find/',function(next){
 //     var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 //     return emailRegex.test(email); // Assuming email has a text attribute
 //  }, 'The e-mail field cannot be empty.')
+
+
+userSchema.pre('save',async function(next){
+    if(!this.isModified('password'))return next()
+    //bcrypt libary is used to encrypt the password
+    this.password = await bcrypt.hash(this.password,12)
+    //after we add the password and confirmed it you need to delete it
+    this.passwordConfirmation = undefined;
+    next()
+})
 
 const User = mongoose.model('User',userSchema)
 module.exports = User
