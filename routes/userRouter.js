@@ -10,7 +10,7 @@ const {
     getMonthlyPlan
 } 
 = require("./../controllers/userController")
-const {signup} = require('./../controllers/authController')
+const {signup, login} = require('./../controllers/authController')
 
 
 
@@ -26,6 +26,7 @@ router.route("/users-stats").get(getUserStat)
 //router.route("/monthly-plan").get(getMonthlyPlan)
 
 router.post('/signup',signup)
+router.post('/login',login)
 
 router.route('/')
 .get(getAllUsers)

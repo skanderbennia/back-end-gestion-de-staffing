@@ -29,6 +29,7 @@ const userSchema = mongoose.Schema({
         type:String,
         //required:[true,'vous devez entre le mot de passe']
         minlength:8,
+        select:false
         
     },
     passwordConfirmation:{
@@ -110,6 +111,10 @@ userSchema.pre('save',async function(next){
     this.passwordConfirmation = undefined;
     next()
 })
+//this function help us to compare the encrypted password and the no encrypted password
+userSchema.methods.correctPassword = async function(candidatePassword,userPassword){
+    return await bcrypt.compare(candidatePassword,userPassword)
+}
 
 const User = mongoose.model('User',userSchema)
 module.exports = User
