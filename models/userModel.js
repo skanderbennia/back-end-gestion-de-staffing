@@ -22,7 +22,8 @@ const userSchema = mongoose.Schema({
                 return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
             },
             message: props => `${props.value} is not a valid email!`
-        }
+        },
+        unique:true
        
     },
     password:{
@@ -61,10 +62,7 @@ const userSchema = mongoose.Schema({
         type:Date,
         default: Date.now()
     },
-    secretPeople:{
-        type:Boolean,
-        default:false
-    }
+    passwordChangedAt: Date
     
     //im making test here but this schema need to be heavy
 
@@ -111,6 +109,15 @@ userSchema.pre('save',async function(next){
     this.passwordConfirmation = undefined;
     next()
 })
+userSchema.methods.changePasswordAfter = function(JWTTimeStamp){
+    if(this.passwordChangedAt){
+        const changedTimeStamp = parseInt(this.passwordChangedAt.getTime()/1000,10)
+        console.log(changedTimeStamp, JWTTimeStamp)
+        return JWTTimeStamp < changedTimeStamp
+    }
+    //false mean not changed
+    return false
+}
 //this function help us to compare the encrypted password and the no encrypted password
 userSchema.methods.correctPassword = async function(candidatePassword,userPassword){
     return await bcrypt.compare(candidatePassword,userPassword)

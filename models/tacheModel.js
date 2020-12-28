@@ -20,7 +20,8 @@ const tacheSchema = mongoose.Schema({
         _id:String,
         nom:String,
         prenom:String,
-    }
+    },
+    
 })
 const Tache = mongoose.model('Tache',tacheSchema)
 module.exports = Tache

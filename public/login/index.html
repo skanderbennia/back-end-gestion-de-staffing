@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<video autoplay muted loop id="myVideo">
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+<body>
+    <form>
+    <div class="login-box">
+        <h1>Login</h1>
+        <div class="textbox">
+            <i class="fas fa-user"></i>
+            <input type="text" placeholder="Username" name="inp_username" id="inp_username">
+        </div>
+
+        <div class="textbox">
+            <i class="fas fa-lock"></i>
+            <input type="password" placeholder="Password" name="inp_password" id="inp_password">
+        </div>
+
+        <input type="button" class="btn" value="Sign in" id="submit" onclick="login()">
+    </div>
+</form>
+
+
+
+<script>
+   
+ 
+   
+// $(document).ready(function() {
+
+// $('#submit').click(function() {
+//     $.ajax({
+//         type: "POST",
+//         url: 'localhost:3000/api/v1/users/login',
+//         data: {
+//             username: $("#inp_username").val(),
+//             password: $("#inp_password").val()
+//         },
+//         success: function(data)
+//         {
+//             if (data)  {
+//                 console.log(data)
+//             }
+//             else {
+//                 alert(data);
+//             }
+//         }
+//     });
+
+// });
+
+// });
+// let login = () => {
+// $.post( "localhost:3000/api/v1/users/login", )
+// .done((data) => {
+//     if(data.type === 'error'){
+//        console.log(data)
+//     }
+//     })
+// }
+// $(document).ready(function() {
+//     // var userData = {
+//     //     email: "skander.skon154@gmail.com",
+//     //     password: "skander123"
+//     // };
+    
+//     $('#submit').click(function() {
+//     $.ajax({
+//         url: "localhost:3000/api/v1/users/login",
+//         type: "POST",
+//         dataType: "json",
+//         data: {
+//             email:"skander.skon154@gmail.com",
+//             password: "skander123"
+//         },
+//         error: function (xhr, status) {
+//             console.log("Sorry, there was a problem!");
+//         },
+//         complete: function (xhr, status) {
+//             console.log(xhr);
+//         }
+//     });
+// })
+// })
+function login(){
+var xhr = new XMLHttpRequest();
+var url = "http://localhost:3000/api/v1/users/login";
+xhr.open("POST", url, true);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var json = JSON.parse(xhr.responseText);
+        sessionStorage.setItem('token', json.token);
+        console.log(sessionStorage.getItem("token"))
+        //window.location.replace("http://localhost:3000/userPage")
+    }
+};
+var data = JSON.stringify({email: document.getElementById('inp_username').value, password:document.getElementById('inp_password').value});
+xhr.send(data);
+}
+//  document.onload(function(){
+//     if(sessionStorage.getItem('token')
+//  })
+
+
+</script>
+
+</body>
+
+</html>
