@@ -5,7 +5,10 @@ const {
     createGroupe,
     getGroupe,
     updateGroupe,
-    deleteGroupe
+    deleteGroupe,
+    AddMemberGroupe,
+    getMemberFromGroupe,
+    deleteOneMember
 }=require("./../controllers/groupeController")
 
 const router  = express.Router()
@@ -18,5 +21,11 @@ router.route('/:id')
 .get(getGroupe)
 .patch(updateGroupe)
 .delete(deleteGroupe)
+
+
+
+router.route('/:idGroupe/user/:idUser')
+.post(AddMemberGroupe)
+.patch(deleteOneMember)
 
 module.exports = router

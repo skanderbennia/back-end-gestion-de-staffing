@@ -104,7 +104,7 @@ xhr.onreadystatechange = function () {
         var json = JSON.parse(xhr.responseText);
         sessionStorage.setItem('token', json.token);
         console.log(sessionStorage.getItem("token"))
-        //window.location.replace("http://localhost:3000/userPage")
+        window.location.replace("http://localhost:3000/userPage")
     }
 };
 var data = JSON.stringify({email: document.getElementById('inp_username').value, password:document.getElementById('inp_password').value});

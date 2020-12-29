@@ -10,6 +10,10 @@ const globalErrorHandler = require("./controllers/errorController")
 const app = express()
 
 
+app.set('view engine', 'ejs');
+app.get('/userpage', function(req, res) {
+    res.render('userPage/index');
+});
 
 app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
@@ -18,7 +22,6 @@ if(process.env.NODE_ENV === "development")
 {
     app.use(morgan("dev"))
 }
-
 
 
 app.use((req,res,next)=>{

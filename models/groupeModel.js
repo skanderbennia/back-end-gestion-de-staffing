@@ -12,7 +12,15 @@ const equipeSchema = mongoose.Schema({
       
       default:Date.now()  
     },
-    groupeMember:[User.schema]
+    groupeMember:{
+      type:[{}],
+      default:[]
+    },
+    creerPar:{
+      idAdmin:String,
+      nomAdmin:String,
+      prenomAdmin:String,
+    }
 })
 const Groupe = mongoose.model('Groupe',equipeSchema)
 

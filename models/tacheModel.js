@@ -21,6 +21,10 @@ const tacheSchema = mongoose.Schema({
         nom:String,
         prenom:String,
     },
+    statusTache:{
+        type:Boolean,
+        default:false
+    }
     
 })
 const Tache = mongoose.model('Tache',tacheSchema)
