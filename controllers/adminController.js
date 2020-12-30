@@ -20,6 +20,7 @@ exports.getAllAdmins = async (req,res)=>{
 }
 exports.createAdmin = async (req,res)=>{
     try{
+        console.log(req.body)
         const admin = await Admin.create(req.body)
         res.status(200).json({
             status:"success",

@@ -1,3 +1,4 @@
+const path = require('path')
 const express= require("express")
 const dotenv = require("dotenv").config({path:__dirname+"/config.env"})
 const morgan = require("morgan")
@@ -10,12 +11,15 @@ const globalErrorHandler = require("./controllers/errorController")
 const app = express()
 
 
-app.set('view engine', 'ejs');
-app.get('/userpage', function(req, res) {
-    res.render('userPage/index');
-});
+// app.set('view engine', 'ejs');
+// app.get('/userPage', function(req, res) {
+//     res.render('userPage/index',req);
+//     console.log(req)
+// });
+app.set('view engine','pug')
+app.set('views','./views')
 
-app.use(express.static(`${__dirname}/public`))
+// app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
 
 if(process.env.NODE_ENV === "development")
@@ -32,6 +36,14 @@ app.use((req,res,next)=>{
 
 
 //routing
+app.get('/userPage',(req,res,)=>{
+    res.status(200).render('userPage/index',{
+        tour:'The Forest Hiker',
+        user:'Jonas'
+    })
+})
+
+
 app.use('/api/v1/users',userRouter)
 app.use('/api/v1/admins',adminRouter)
 app.use('/api/v1/groupes',groupeRouter)
