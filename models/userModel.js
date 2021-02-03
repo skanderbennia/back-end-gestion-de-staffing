@@ -62,7 +62,12 @@ const userSchema = mongoose.Schema({
         type:Date,
         default: Date.now()
     },
-    passwordChangedAt: Date
+    passwordChangedAt: Date,
+    role:{
+        type:String,
+        enum:['user','admin'],
+        default :'user'
+    }
     
     //im making test here but this schema need to be heavy
 

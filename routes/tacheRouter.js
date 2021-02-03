@@ -4,21 +4,26 @@ getAllTaches,
 getTachesByUser,
 createTache,
 updateTache,
-terminerTache
+terminerTache,
+affecterTache
 }
 =require('./../controllers/tacheController')
+const authController = require('../controllers/authController')
 
-const authController =require('./../controllers/authController')
+
 const router = express.Router()
 //without jwt
 router.route('/')
-.get(getAllTaches)
-.post(createTache)
+.get(authController.protect,authController.restrictTo("admin"),getAllTaches)
+.post(authController.protect,authController.restrictTo("admin"),createTache)
 router.route('/userTache/:id')
-.get(getTachesByUser)
+.get(authController.protect,getTachesByUser)
 router.route('/:id')
-.patch(updateTache)
+.patch(authController.protect,authController.restrictTo("admin"),updateTache)
 router.route('/terminerTache/:id')
-.patch(terminerTache)
+.patch(authController.protect,terminerTache)
+//affecter un utilisateur a une tache spécifique
+router.route('/:tacheId/user/:userId')
+.patch(affecterTache)
 
 module.exports = router

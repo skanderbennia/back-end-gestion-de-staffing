@@ -136,4 +136,14 @@ exports.deleteOneMember = catchAsync(async(req,res,next)=>{
         groupe:newGroupe
     })
 })
-//get member from a groupe
+//get Members of a groupe 
+exports.getMembersGroupe = catchAsync(async(req,res,next)=>{
+    const groupe = await Groupe.findById(req.params.id)
+
+    res.status(200).json({
+        status:'success',
+        members:groupe.groupeMember
+    })
+    //we need to check if the member still exist the database before sending the groupe member or 
+    //we will have member in the groupe that doesn't exist in the database
+})

@@ -3,6 +3,7 @@
 const APIFeatures = require("../utils/apiFeatures")
 const catchAsync = require("./../utils/catchAsync")
 const Tache = require('./../models/tacheModel')
+const User = require("../models/userModel")
 
 
 
@@ -77,4 +78,17 @@ exports.terminerTache = catchAsync(async(req,res,next)=>{
         status:"success",
         tache:tache
     })
+})
+exports.affecterTache = catchAsync(async(req,res,next)=>{
+    // const tache = await Tache.findById(req.params.tacheId)
+    const user = await User.findById(req.params.userId)
+    const tache = await Tache.findByIdAndUpdate(req.params.tacheId,{user:user.id},{
+        runValidators:true,
+        new:true
+    })
+    res.status(203).json({
+        status:"success",
+        tache:tache
+    })
+
 })

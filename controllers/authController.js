@@ -58,7 +58,9 @@ if(!user|| !(await user.correctPassword(password,user.password))){
 const token = signToken(user._id)
 res.status(200).json({
     status:'success',
-    token
+    token,
+    userInformation: user
+
 })
 })
 exports.protect = catchAsync(async(req,res,next)=>{
@@ -69,6 +71,7 @@ exports.protect = catchAsync(async(req,res,next)=>{
         token = req.headers.authorization.split(' ')[1]
     }
     console.log(process.env.JWT_SECRET)
+    console.log(req.headers.authorization)
     if(!token){
         return next(new AppError('You are not logged in ! please login to get access'),401)
     }
@@ -90,3 +93,13 @@ exports.protect = catchAsync(async(req,res,next)=>{
     req.user = currentUser
     next()
 })
+exports.restrictTo = (...roles)=>{
+    return (req,res,next)=>{
+        //roles is an array ['admin',if you add it in the router'user']
+        //req.user we did save it in the middleware authController.protect that why we are able to access it
+        if(!roles.includes(req.user.role))
+        return next (new AppError('you do not have permission to perform this action',403))
+        next()
+    }
+    
+}

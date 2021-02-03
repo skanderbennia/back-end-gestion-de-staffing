@@ -11,10 +11,7 @@ const {
 } 
 = require("./../controllers/userController")
 const {signup, login} = require('./../controllers/authController')
-
-
-
-
+const authController = require('./../controllers/authController')
 
 const router = express.Router()
 //they are not the top but i m just naming it like that
@@ -29,12 +26,12 @@ router.post('/signup',signup)
 router.post('/login',login)
 
 router.route('/')
-.get(getAllUsers)
+.get(authController.protect,authController.restrictTo("admin"),getAllUsers)
 .post(createUser)
 
 router.route("/:id")
-.get(getUser)
-.patch(updateUser)
-.delete(deleteUser)
+.get(authController.protect,authController.restrictTo("admin"),getUser)
+.patch(authController.protect,authController.restrictTo("admin"),updateUser)
+.delete(authController.protect,authController.restrictTo("admin"),deleteUser)
 
 module.exports = router

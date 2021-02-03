@@ -10,22 +10,22 @@ const {
     getMemberFromGroupe,
     deleteOneMember
 }=require("./../controllers/groupeController")
-
+const authController = require("../controllers/authController")
 const router  = express.Router()
 
 router.route('/')
-.get(getAllGroupes)
-.post(createGroupe)
+.get(authController.protect,authController.restrictTo("admin"),getAllGroupes)
+.post(authController.protect,authController.restrictTo("admin"),createGroupe)
 
 router.route('/:id')
-.get(getGroupe)
-.patch(updateGroupe)
-.delete(deleteGroupe)
+.get(authController.protect,authController.restrictTo("admin"),getGroupe)
+.patch(authController.protect,authController.restrictTo("admin"),updateGroupe)
+.delete(authController.protect,authController.restrictTo("admin"),deleteGroupe)
 
 
 
 router.route('/:idGroupe/user/:idUser')
-.post(AddMemberGroupe)
-.patch(deleteOneMember)
+.post(authController.protect,authController.restrictTo("admin"),AddMemberGroupe)
+.patch(authController.protect,authController.restrictTo("admin"),deleteOneMember)
 
 module.exports = router

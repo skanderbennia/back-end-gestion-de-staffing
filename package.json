@@ -14,7 +14,6 @@
     "dev": "parcel index.html",
     "build": "parcel build index.html"
   },
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/skanderbennia/back-end-gestion-de-staffing.git"
@@ -29,6 +28,7 @@
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "bootstrap": "^5.0.0-beta1",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
@@ -50,6 +50,4 @@
     "ndb": "^1.1.5",
     "prettier": "^2.2.1"
   }
-
 }
-

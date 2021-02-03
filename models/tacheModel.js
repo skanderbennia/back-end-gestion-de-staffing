@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const User = require('./userModel')
+
 
 const tacheSchema = mongoose.Schema({
     nom:{
@@ -27,5 +27,6 @@ const tacheSchema = mongoose.Schema({
     }
     
 })
+
 const Tache = mongoose.model('Tache',tacheSchema)
 module.exports = Tache
