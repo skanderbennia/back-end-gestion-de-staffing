@@ -41,9 +41,7 @@ exports.createTache = catchAsync(async(req,res,next) =>{
 //get tache by user
 exports.getTachesByUser = catchAsync(async(req,res,next)=>{
     const tacheUser = await Tache.find({
-        user:{
-            _id:req.params.id,
-        }
+        user:req.params.id,
     })
     res.status(200).json({
         status:'success',

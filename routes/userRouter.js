@@ -7,7 +7,8 @@ const {
     deleteUser,
     aliasUserFiveFirst,
     getUserStat,
-    getMonthlyPlan
+    getMonthlyPlan,
+    getAllSimpleUser
 } 
 = require("./../controllers/userController")
 const {signup, login} = require('./../controllers/authController')
@@ -26,7 +27,7 @@ router.post('/signup',signup)
 router.post('/login',login)
 
 router.route('/')
-.get(authController.protect,authController.restrictTo("admin"),getAllUsers)
+.get(authController.protect,authController.restrictTo("admin"),getAllSimpleUser)
 .post(createUser)
 
 router.route("/:id")

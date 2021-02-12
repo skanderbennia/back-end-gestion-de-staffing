@@ -68,7 +68,6 @@ const userSchema = mongoose.Schema({
         enum:['user','admin'],
         default :'user'
     }
-    
     //im making test here but this schema need to be heavy
 
     

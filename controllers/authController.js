@@ -3,6 +3,7 @@ const User = require('./../models/userModel')
 const catchAsync = require('./../utils/catchAsync')
 const jwt = require('jsonwebtoken')
 const AppError = require('./../utils/appError')
+const sendMail = require('../utils/mail')
 // this function that create signToken : 
 
 
@@ -18,16 +19,19 @@ const signToken = id =>{
 
 
 exports.signup = catchAsync(async (req,res,next)=>{
+    
+    const {nom,prenom,email} = req.body
+    console.log("this is what you are looking for",email,nom,prenom)
+    sendMail(email,nom,prenom,async function(err,data){
+        if(err){
+             return res.status(500).json({
+                 err:"an internal error has been spoted"
+             })
+        }else{
     const newUser = await User.create(req.body); 
-    // {
-    //     name:req.body.name,
-    //     email: req.body.email,
-    //     password: req.body.password,
-    //     passwordConfirmation: req.body.passwordConfirmation
-    // }
     const token = signToken(newUser._id)
      
-    res.status(201).json({
+   return  res.status(201).json({
         status: "success",
         token,
         data:{
@@ -35,6 +39,10 @@ exports.signup = catchAsync(async (req,res,next)=>{
             user:newUser
         }
     })
+
+        }
+    })
+    
 })
 
 
@@ -43,6 +51,7 @@ exports.signup = catchAsync(async (req,res,next)=>{
 
 exports.login = catchAsync(async(req,res,next)=>{
 const {email,password} = req.body
+console.log(email,password)
 //check email and password exist
 if(!email|| !password){
     return next(new AppError('please provide email and password',400))

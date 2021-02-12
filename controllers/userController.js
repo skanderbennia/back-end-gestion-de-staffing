@@ -29,6 +29,24 @@ exports.getAllUsers = catchAsync(async(req,res,next)=>{
             }
         })  
 })
+exports.getAllSimpleUser = catchAsync(async(req,res,next)=>{
+    
+        const features = new APIFeatures(User.find({"role":"user"}),req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .pagination()
+
+        const users = await features.query
+        //send the query
+        res.status(200).json({
+            status:'success',
+            dataLength:users.length,
+            data:{
+                users:users
+            }
+        })  
+})
 
 exports.getUser = catchAsync(async(req,res,next)=>{
     
