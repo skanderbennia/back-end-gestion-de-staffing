@@ -7,6 +7,7 @@ const userRouter = require("./routes/userRouter")
 const groupeRouter = require("./routes/groupeRouter")
 const tacheRouter  = require('./routes/tacheRouter')
 const viewRouter = require("./routes/viewRouter")
+const notificationRouter = require("./routes/notificationRouter")
 const AppError = require('./utils/appError')
 const globalErrorHandler = require("./controllers/errorController")
 const sendMail = require('./utils/mail')
@@ -38,6 +39,7 @@ app.use('/',viewRouter)
 app.use('/api/v1/users',userRouter)
 app.use('/api/v1/groupes',groupeRouter)
 app.use('/api/v1/taches',tacheRouter)
+app.use('/api/v1/notifications',notificationRouter)
 
 app.all('*',(req,res,next)=>{
   

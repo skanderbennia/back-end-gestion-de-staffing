@@ -5,7 +5,8 @@ getTachesByUser,
 createTache,
 updateTache,
 terminerTache,
-affecterTache
+affecterTache,
+getAllUnDoneTaches
 }
 =require('./../controllers/tacheController')
 const authController = require('../controllers/authController')
@@ -14,7 +15,7 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 //without jwt
 router.route('/')
-.get(authController.protect,authController.restrictTo("admin"),getAllTaches)
+.get(authController.protect,authController.restrictTo("admin"),getAllUnDoneTaches)
 .post(authController.protect,authController.restrictTo("admin"),createTache)
 router.route('/userTache/:id')
 .get(authController.protect,getTachesByUser)

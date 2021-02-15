@@ -230,7 +230,7 @@
       </div>
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" onclick="logout()">Logout</a></li>
+          <li><a class="logout"  onclick="logout()">Logout</a></li>
         </ul>
       </div>
     </header>
@@ -244,7 +244,7 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
           <p class="centered"><a href="profile.html"><img src="img/ui-sam.jpg" class="img-circle" width="80"></a></p>
-          <h5 id="nomprenom" class="centered">  </h5>
+          <h5 id="nomprenom" class="centered"></h5>
           <li class="mt">
             <a href="http://localhost:3000/dashboard">
               <i class="fa fa-dashboard"></i>
@@ -257,7 +257,7 @@
               <span>Toutes les taches </span>
               </a>
           </li>
-          <li>
+           <li>
             <a href="http://localhost:3000/groupeList">
               <i class="fa fa-map-marker"></i>
               <span>Toutes les groupe </span>
@@ -274,59 +274,42 @@
     <!--main content start-->
     <section id="main-content">
       <section class="wrapper">
-        <h3><i class="fa fa-angle-right"></i> Toutes les taches</h3>
-        <a href="http://localhost:3000/addTask" class='btn btn-default' >Add</a>
+        <h3><i class="fa fa-angle-right"></i> User List</h3>
         <!-- SIMPLE TO DO LIST -->
-        <div class="row mt">
-          <div class="col-md-12">
-            <div class="white-panel pn">
-              <div class="panel-heading">
-                <div class="pull-left">
-                  <h5><i class="fa fa-tasks"></i> Toute les taches </h5>
-                </div>
-                <br>
-              </div>
-              <div class="custom-check goleft mt">
-                <table id="todo" class="table table-hover custom-check">
-                  <tbody id="taches">
-                    
-                    <tr>
-                      
-                      <td>
-                        <span class="check"><input type="checkbox" class="checked"></span>
-                        <a href="index.html#">Send invoice</a></span>
-                        <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
-                      </td>
-                    </tr>
-                    
-                  </tbody>
-                </table>
-                
-              </div>
-              <!-- /table-responsive -->
-            </div>
-            <!--/ White-panel -->
-            
-          </div>
-          
-          <!-- /col-md-12 -->
-        </div>
+       <table>
+  <thead>
+    <tr>
+      <th>nom</th>
+      <th>date de creation</th>
+      
+      <th colspan="3">action</th>
+    </tr>
+  </thead>
+  <tbody id="groupes">
+  
+      
         
+      
+    </tr>
+ 
+    
+    
+  </tbody>
+</table>
+ <a href="http://localhost:3000/addGroupe" class='btn btn-default' style="align-self: flex-end;" >Add</a>
         <!--  row -->
         <!-- COMPLEX TO DO LIST -->
        
         <!-- /row -->
-        
       </section>
-      
       <!-- /wrapper -->
     </section>
-      
-   
     <!-- /MAIN CONTENT -->
     <!--main content end-->
     <!--footer start-->
     
+    <!--footer end-->
+  </section>
   <!-- js placed at the end of the document so the pages load faster -->
   <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/bootstrap/js/bootstrap.min.js"></script>
@@ -348,31 +331,45 @@
       $("#sortable").disableSelection();
     });
   </script>
-  <script>
-    if (!(sessionStorage.getItem("user"))){
+<script>
+ if (!(sessionStorage.getItem("user"))){
    location.replace("http://localhost:3000/")
   }
-    let userdata = JSON.parse(sessionStorage.getItem("user")).userInformation
-    let token = JSON.parse(sessionStorage.getItem("user")).token
-    let tachesHtml = document.getElementById("taches")
-    document.getElementById("nomprenom").innerHTML = userdata.nom+userdata.prenom;
-    $.ajax({
-      type:"GET",
-      url:"http://localhost:3000/api/v1/taches",
-      beforeSend:function(xhr){
-          xhr.setRequestHeader("Authorization", "Bearer "+token);
-      },
-      dataType:"json",
-      success:function(data){
-          console.log(data.data.taches)
-          data.data.taches.forEach(tach => {
-                      tachesHtml.innerHTML+="<tr><td><span class='check'><input type='checkbox' class='checked'></span><a href='http://localhost:3000/aboutTask/"+tach._id +"'> "+tach.nom+"</a></span><a class='close' aria-hidden='true' data-dismiss='alert' type='button' href='http://localhost:3000/deleteTask/"+tach._id+"'>×</a></td></tr>"
-
-          });
-      }
-    })
-  </script>
-  <script>
+ let nom = JSON.parse(sessionStorage.getItem("user")).userInformation.nom;
+ let prenom = JSON.parse(sessionStorage.getItem("user")).userInformation.prenom;
+ let token = JSON.parse(sessionStorage.getItem("user")).token;
+ console.log(sessionStorage.getItem("user"))
+ 
+ let groupesHtml = document.getElementById("groupes")
+ document.getElementById("nomprenom").innerHTML = nom+prenom;
+ $(document).ready(function (){
+ 
+ 
+    $.ajax({                                      
+      url: 'http://localhost:3000/api/v1/groupes',              
+      type: "get",          
+      dataType: 'json',
+      beforeSend : function (xhr) {
+        xhr.setRequestHeader("Authorization", "Bearer "+token);
+    },              
+      success: function(data)
+           {
+           
+           console.log(data)
+           let groupes = data.groupes;
+           groupes.forEach(groupe => {
+           groupesHtml.innerHTML +="<tr>"+"<td><strong>"+groupe.nom +"</strong></td>"+"<td>"+groupe.dateCreation +"</td>"+"<td><form action='/deleteGroupe' method='POST'> <input name='token' value='"+token+"' hidden><input name='id' value='"+groupe._id+"' hidden> <input type='submit' class='btn btn-danger' value='Delete'/></form></td>"+"<td><form method='POST' action='/modifyGroupe'><input type='text' name='id' value="+ groupe._id+" hidden><input type='submit' class='btn btn-default'value ='Modifier' /></form></td><td><a href='http://localhost:3000/usersInGroupe/"+groupe._id +"' class='btn btn-default'>Profil</a>"+"</tr>"    
+           });
+           } //Change to this
+   });
+});
+</script>
+<script type = "text/javascript" >  
+    function preventBack() { window.history.forward(); }  
+    setTimeout("preventBack()", 0);  
+    window.onunload = function () { null };  
+</script> 
+<script>
  const logout = ()=>{
   sessionStorage.removeItem("user")
   location.replace("http://localhost:3000")
@@ -380,7 +377,6 @@
 
  
 </script>
-
 </body>
 
 </html>

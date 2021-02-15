@@ -4,7 +4,9 @@ const router = express.Router()
 const client = require('../utils/axios')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel');
-const { json } = require('body-parser');
+const Groupe = require("../models/groupeModel")
+const Tache = require("../models/tacheModel");
+
 
 router.get('/admintaches',function(req,res){
   res.render("pages/adminTaches")
@@ -119,5 +121,51 @@ router.post("/modify",async function(req,res){
   if(user){
     res.render("pages/modifierUser",{user:user})
   }
+})
+router.get("/addTask",function(req,res){
+  res.render('pages/addTask')
+})
+router.get("/taskinfo/:id",async function(req,res){
+  console.log(req.params.id)
+  res.render("pages/invoice.ejs")
+})
+router.get('/profil/:idUser',async(req,res)=>{
+  console.log(req.params.idUser)
+  const user= await User.findById(req.params.idUser)
+  console.log("user profile is here",user)
+  res.render("pages/profil",{user:user})
+})
+router.get("/groupeList",(req,res)=>{
+    res.render("pages/adminGroupe")
+})
+router.post("/deleteGroupe",async(req,res)=>{
+  const {id,token} = req.body
+  if(id&&token){
+    await Groupe.findByIdAndDelete(id)
+    res.render('pages/adminGroupe')
+  }
+})
+router.post("/modifyGroupe",async(req,res)=>{
+  const {id} = req.body
+  if(id){
+    const currentGroupe = await Groupe.findById(id)
+    res.render("pages/modifierGroupe",{groupe:currentGroupe})
+  }
+})
+// router.get("/usersInGroupe",async(req,res)=>{
+//   res.render("pages/")
+// })
+router.get("/addGroupe",async(req,res)=>{
+  res.render("pages/addGroupe")
+})
+router.get("/aboutTask/:id",async function(req,res){
+  console.log(req.params.id)
+  const currentTache = await Tache.findById(req.params.id)
+  res.render("pages/aboutTask",{tache:currentTache})
+  
+})
+router.get("/deleteTask/:id",async function(req,res){
+  await Tache.findByIdAndDelete(req.params.id)
+  res.redirect("http://localhost:3000/admintaches")
 })
 module.exports = router;

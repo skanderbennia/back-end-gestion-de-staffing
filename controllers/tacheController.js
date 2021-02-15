@@ -38,6 +38,26 @@ exports.createTache = catchAsync(async(req,res,next) =>{
         tache:tache
     })
 })
+//get finished tasks
+exports.getAllUnDoneTaches = catchAsync(async(req,res,next) =>{
+    
+    const feature = new APIFeatures(Tache.find({"statusTache": false}),req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .pagination()
+
+    const taches = await feature.query
+
+    res.status(200).json({
+        status:'success',
+        dataLength:taches.length,
+        data:{
+            taches:taches
+        }
+
+    })
+})
 //get tache by user
 exports.getTachesByUser = catchAsync(async(req,res,next)=>{
     const tacheUser = await Tache.find({

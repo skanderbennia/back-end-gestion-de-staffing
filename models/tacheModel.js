@@ -27,6 +27,5 @@ const tacheSchema = mongoose.Schema({
     }
     
 })
-
 const Tache = mongoose.model('Tache',tacheSchema)
 module.exports = Tache

@@ -4,6 +4,7 @@ const catchAsync = require('./../utils/catchAsync')
 const jwt = require('jsonwebtoken')
 const AppError = require('./../utils/appError')
 const sendMail = require('../utils/mail')
+const notification = require("../models/notificationModel")
 // this function that create signToken : 
 
 
@@ -30,6 +31,7 @@ exports.signup = catchAsync(async (req,res,next)=>{
         }else{
     const newUser = await User.create(req.body); 
     const token = signToken(newUser._id)
+    await notification.create({nom:"User Signup",description:"A new user named "+newUser.nom+" "+newUser.prenom+" has create an account"})
      
    return  res.status(201).json({
         status: "success",
@@ -54,17 +56,21 @@ const {email,password} = req.body
 console.log(email,password)
 //check email and password exist
 if(!email|| !password){
-    return next(new AppError('please provide email and password',400))
+    return next(new AppError('please provide email and password',404))
 }
 //check if user exists && password is correct
 const user = await User.findOne({email}).select("+password")
 
 
 if(!user|| !(await user.correctPassword(password,user.password))){
-    return next(new AppError('Incorrect email or password',401))
+    return next(new AppError('Incorrect email or password',404))
+    
 }
 // if everything ok, send token to client
 const token = signToken(user._id)
+
+await notification.create({nom:user.prenom+" "+user.nom+" Log in",description:"User "+user.nom+" "+user.prenom+" has logged in at this time"})
+
 res.status(200).json({
     status:'success',
     token,
