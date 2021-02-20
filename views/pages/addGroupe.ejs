@@ -38,8 +38,13 @@
       <form class="form-login" method="POST" id="patch-form" >
         <h2 class="form-login-heading">ADD Groupe :</h2>
         <div class="login-wrap">
-          <input type="text" class="form-control" name="nom" placeholder="nom"  autofocus>
+          <input type="text" class="form-control" name="nom" placeholder="nom" id="groupeNom"  autofocus>
           <br>
+          <select type="text" class="form-control" id="users" autofocus>
+            <option value="" disabled selected>Select user ...</option>
+          </select>
+          
+
           <br>
           <button class="btn btn-theme btn-block"  type="submit"><i class="fa fa-lock"></i> Change</button>
           </div>
@@ -59,21 +64,55 @@
   
   $("#patch-form").on("submit",function(e){
       e.preventDefault()
-      var form = $(this);
+      const groupeNom = document.getElementById("groupeNom").value
+      const user = document.getElementById("users").value
        $.ajax({
        type:"POST",
        url:`http://localhost:3000/api/v1/groupes`,
-       data:form.serialize(),
+       data:{
+         nom:groupeNom,
+         
+       },
        dataType:'json',
        beforeSend:function(xhr){
               xhr.setRequestHeader("Authorization", "Bearer "+token);
        },
        success:function(data){
+         $.ajax({
+       type:"POST",
+       url:`http://localhost:3000/api/v1/groupes/${data.groupe._id}/user/${user}`,
+
+       dataType:'json',
+       beforeSend:function(xhr){
+              xhr.setRequestHeader("Authorization", "Bearer "+token);
+       },
+       success:function(data){
+         
+          
+       }
+})
           location.replace('http://localhost:3000/groupeList')
        }
 })
   })     
   
+  </script>
+  <script>
+    let selectUser = document.getElementById("users")
+      $.ajax({
+       type:"GET",
+       url:`http://localhost:3000/api/v1/users`,
+       dataType:'json',
+       beforeSend:function(xhr){
+              xhr.setRequestHeader("Authorization", "Bearer "+token);
+       },
+       success:function(data){
+         console.log(data)
+          data.data.users.forEach(user => {
+            selectUser.innerHTML+= "<option value='"+user._id +"' >"+user.nom+user.prenom+"</option>"
+          });
+       }
+})
   </script>
 </body>
 

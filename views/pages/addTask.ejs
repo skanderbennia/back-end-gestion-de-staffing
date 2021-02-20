@@ -153,6 +153,18 @@ small {
 						<label for="deadline">deadline: </label>
 						<input type="date" id="deadline">
 				</p>
+
+
+				<p>
+						<label for="deadline" id="labelUser">User: </label>
+						<select name="" id="userList" onchange="deleteListGroupe()" >
+							<option value="" disabled selected>Select your option</option>
+						</select>
+						<label id="labelGroupe" for="deadline">Groupe: </label>
+						<select name="" id="groupeList" onchange="deleteListUser()" >
+							<option value="" disabled selected>Select your option</option>
+						</select>
+				</p>
 				<p>
 						<input type="submit" value="Envoyer">
 				</p>
@@ -177,15 +189,19 @@ $("#my_form").on("submit",function(e){
          const taskName = document.getElementById("name").value
          const deadline = document.getElementById("deadline").value
          const description = document.getElementById("description").value
-         console.log(deadline,description,taskName)
-       var form = $(this)
-       $.ajax({
+	  const userList = document.getElementById("userList").value
+	  const groupeList = document.getElementById("groupeList").value
+	  if(groupeList ==""){
+		   $.ajax({
               type:"POST",
               url:"http://localhost:3000/api/v1/taches",
               data:{
                      nom:taskName,
                      description:description,
-                     deadline:deadline
+                     deadline:deadline,
+			user:{
+				_id:userList
+			}
               },
               dataType:"json",
               beforeSend:function(xhr){
@@ -199,6 +215,90 @@ $("#my_form").on("submit",function(e){
               }
               
        })
-})
+
+	  }
+	  if(userList ==""){
+		   $.ajax({
+              type:"POST",
+              url:"http://localhost:3000/api/v1/taches",
+              data:{
+                     nom:taskName,
+                     description:description,
+                     deadline:deadline,
+			groupe:{
+				_id:groupeList
+			}
+              },
+              dataType:"json",
+              beforeSend:function(xhr){
+                     xhr.setRequestHeader("Authorization", "Bearer "+token);
+              },
+              success:function(data){
+                     location.replace("http://localhost:3000/dashboard")
+              },
+              error:function(err){
+                    console.log(err)
+              }
+              
+       })
+
+	  }
+	})
+       
+      
+  </script>
+  <script>
+	  let userListHtml=document.getElementById("userList")
+	  $.ajax({
+		 type:"GET",
+		 url:"http://localhost:3000/api/v1/users",
+		 beforeSend:function(xhr){
+                     xhr.setRequestHeader("Authorization", "Bearer "+token);
+              },
+              success:function(data){
+			console.log(data)
+			data.data.users.forEach(user => {
+				userListHtml.innerHTML+="<option value='"+user._id+"'>"+user.nom+" "+user.prenom +"</option>"
+			});
+			
+              },
+	  })
+  </script>
+  <script>
+	  let groupeListHtml = document.getElementById("groupeList")
+	  $.ajax({
+		 type:"GET",
+		 url:"http://localhost:3000/api/v1/groupes",
+		 beforeSend:function(xhr){
+                     xhr.setRequestHeader("Authorization", "Bearer "+token);
+              },
+              success:function(data){
+			console.log(data)
+			 data.groupes.forEach(groupe => {
+			 	groupeListHtml.innerHTML+="<option value='"+groupe._id+"'>"+groupe.nom+"</option>"
+			 });
+			
+              },
+	  })
+  </script>
+  <script>
+	 function deleteListGroupe(){
+		 if( document.getElementById("groupeList").getAttribute("hidden")=="true"&& document.getElementById("labelGroupe").innerHTML=="")
+		 {document.getElementById("groupeList").setAttribute("hidden","false")
+		 document.getElementById("labelGroupe").innerHTML="Groupe"
+		}else{
+		document.getElementById("groupeList").setAttribute("hidden","true")
+		 document.getElementById("labelGroupe").innerHTML=""
+		}
+	 }
+	 function deleteListUser(){
+		 if( document.getElementById("userList").getAttribute("hidden")=="true"&& document.getElementById("labelUser").innerHTML=="")
+		 {document.getElementById("userList").setAttribute("hidden","false")
+		 document.getElementById("labelUser").innerHTML="Groupe"
+		}else{
+		document.getElementById("userList").setAttribute("hidden","true")
+		 document.getElementById("labelUser").innerHTML=""
+		}
+	 }
   </script>
 </html>

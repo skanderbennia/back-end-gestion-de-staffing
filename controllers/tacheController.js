@@ -61,7 +61,7 @@ exports.getAllUnDoneTaches = catchAsync(async(req,res,next) =>{
 //get tache by user
 exports.getTachesByUser = catchAsync(async(req,res,next)=>{
     const tacheUser = await Tache.find({
-        user:req.params.id,
+        user:{_id:req.params.id}
     })
     res.status(200).json({
         status:'success',

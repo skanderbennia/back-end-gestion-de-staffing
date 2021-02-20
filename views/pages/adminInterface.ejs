@@ -172,7 +172,7 @@
     });
   </script>
 <script>
- if (!(sessionStorage.getItem("user"))){
+ if (JSON.parse((sessionStorage.getItem("user"))).userInformation.role !== "admin"){
    location.replace("http://localhost:3000/")
   }
  let nom = JSON.parse(sessionStorage.getItem("user")).userInformation.nom;

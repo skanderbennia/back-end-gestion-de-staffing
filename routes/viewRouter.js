@@ -161,11 +161,23 @@ router.get("/addGroupe",async(req,res)=>{
 router.get("/aboutTask/:id",async function(req,res){
   console.log(req.params.id)
   const currentTache = await Tache.findById(req.params.id)
-  res.render("pages/aboutTask",{tache:currentTache})
+  let userInTask
+  console.log(currentTache)
+  if(currentTache.user._id!=undefined){
+ userInTask = await User.findById(currentTache.user._id)
+  }
+   if(currentTache.groupe._id!=undefined){
+ userInTask = await Groupe.findById(currentTache.groupe._id)
+  }
+ 
+  res.render("pages/aboutTask",{tache:currentTache,user:userInTask})
   
 })
 router.get("/deleteTask/:id",async function(req,res){
   await Tache.findByIdAndDelete(req.params.id)
   res.redirect("http://localhost:3000/admintaches")
+})
+router.get("/a",function(req,res){
+  res.render("pages/page")
 })
 module.exports = router;

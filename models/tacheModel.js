@@ -18,8 +18,9 @@ const tacheSchema = mongoose.Schema({
     },
     user:{
         _id:String,
-        nom:String,
-        prenom:String,
+    },
+    groupe:{
+        _id:String
     },
     statusTache:{
         type:Boolean,
