@@ -20,6 +20,10 @@ const equipeSchema = mongoose.Schema({
       idAdmin:String,
       nomAdmin:String,
       prenomAdmin:String,
+    },
+    taches:{
+      type: Array,
+      default:[]
     }
 })
 const Groupe = mongoose.model('Groupe',equipeSchema)

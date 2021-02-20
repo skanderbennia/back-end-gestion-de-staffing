@@ -4,6 +4,7 @@ const APIFeatures = require("../utils/apiFeatures")
 const catchAsync = require("./../utils/catchAsync")
 const Tache = require('./../models/tacheModel')
 const User = require("../models/userModel")
+const Groupe = require("../models/groupeModel")
 
 
 
@@ -63,9 +64,24 @@ exports.getTachesByUser = catchAsync(async(req,res,next)=>{
     const tacheUser = await Tache.find({
         user:{_id:req.params.id}
     })
+    console.log(tacheUser)
+    const userGroupe = await User.findById(req.params.id)
+    
+    const groupe = await Groupe.findById(userGroupe.groupe)
+    
+    const tacheGroupe = await Tache.find({
+        groupe:{_id:String(groupe._id)}
+    })
+    let tachebyGroupe =[]
+    tacheGroupe.forEach(tache => {
+        tache.nom+="     [related to the groupe("+groupe.nom+")]"
+        tachebyGroupe.push(tache)
+    });
+    console.log(tacheGroupe)
+    const allTask = tacheUser.concat(tachebyGroupe)
     res.status(200).json({
         status:'success',
-        tache:tacheUser
+        tache:allTask
     })
 })
 //update tache

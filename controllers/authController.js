@@ -3,7 +3,7 @@ const User = require('./../models/userModel')
 const catchAsync = require('./../utils/catchAsync')
 const jwt = require('jsonwebtoken')
 const AppError = require('./../utils/appError')
-const sendMail = require('../utils/mail')
+const sendMail = require('../utils/mailerAnother')
 const notification = require("../models/notificationModel")
 // this function that create signToken : 
 
@@ -23,7 +23,7 @@ exports.signup = catchAsync(async (req,res,next)=>{
     
     const {nom,prenom,email} = req.body
     console.log("this is what you are looking for",email,nom,prenom)
-    sendMail(email,nom,prenom,async function(err,data){
+    sendMail(email,async function(err,data){
         if(err){
              return res.status(500).json({
                  err:"an internal error has been spoted"

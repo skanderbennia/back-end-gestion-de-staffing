@@ -358,7 +358,7 @@
            console.log(data)
            let groupes = data.groupes;
            groupes.forEach(groupe => {
-           groupesHtml.innerHTML +="<tr>"+"<td><strong>"+groupe.nom +"</strong></td>"+"<td>"+groupe.dateCreation +"</td>"+"<td><form action='/deleteGroupe' method='POST'> <input name='token' value='"+token+"' hidden><input name='id' value='"+groupe._id+"' hidden> <input type='submit' class='btn btn-danger' value='Delete'/></form></td>"+"<td><form method='POST' action='/modifyGroupe'><input type='text' name='id' value="+ groupe._id+" hidden><input type='submit' class='btn btn-default'value ='Modifier' /></form></td><td><a href='http://localhost:3000/usersInGroupe/"+groupe._id +"' class='btn btn-default'>Profil</a>"+"</tr>"    
+           groupesHtml.innerHTML +="<tr>"+"<td><strong>"+groupe.nom +"</strong></td>"+"<td>"+groupe.dateCreation +"</td>"+"<td><form action='/deleteGroupe' method='POST'> <input name='token' value='"+token+"' hidden><input name='id' value='"+groupe._id+"' hidden> <input type='submit' class='btn btn-danger' value='Delete'/></form></td>"+"<td><form method='POST' action='/modifyGroupe'><input type='text' name='id' value="+ groupe._id+" hidden><input type='submit' class='btn btn-default'value ='Modifier' /></form></td><td><a href='http://localhost:3000/consulterGroupe/"+groupe._id +"' class='btn btn-default'>Profil</a>"+"</tr>"    
            });
            } //Change to this
    });

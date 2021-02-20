@@ -54,17 +54,17 @@ exports.deleteGroupe = catchAsync(async (req,res)=>{
 //ajouter member
 exports.AddMemberGroupe = catchAsync(async(req,res,next)=>{
     
-    const {_id} = await User.findById(req.params.idUser)
+    const user= await User.findById(req.params.idUser)
     const groupe = await Groupe.findById(req.params.idGroupe)
     let newGroupe
-    console.log(_id, groupe)
-    if(groupe&&_id)
+    console.log(user._id, groupe)
+    if(groupe&&user._id)
     {
         if(groupe.groupeMember.length>0){
         
-            if(groupe.groupeMember.indexOf(_id) === -1)
+            if(groupe.groupeMember.indexOf(user._id) === -1)
        { 
-           groupe.groupeMember.push(_id)
+           groupe.groupeMember.push(user._id)
              newGroupe = await Groupe.findByIdAndUpdate(req.params.idGroupe,groupe,{
                 runValidators:true,
                 new:true
@@ -77,7 +77,7 @@ exports.AddMemberGroupe = catchAsync(async(req,res,next)=>{
         }
     }else{
        let groupeMember = []
-        groupeMember.push(_id)
+        groupeMember.push(user._id)
         // console.log(groupeMember)
          newGroupe = await Groupe.findByIdAndUpdate(req.params.idGroupe,{
             groupeMember:groupeMember
@@ -86,6 +86,11 @@ exports.AddMemberGroupe = catchAsync(async(req,res,next)=>{
             runValidators:true
         })
         
+        let newUser = await User.findByIdAndUpdate(user._id,{groupe:newGroupe._id},{
+             new:true,
+             runValidators:true
+         })
+         console.log("new user",newUser)
     }
     return res.status(200).json({
         status:"success",

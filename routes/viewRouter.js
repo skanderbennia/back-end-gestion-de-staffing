@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/userModel');
 const Groupe = require("../models/groupeModel")
 const Tache = require("../models/tacheModel");
+const { findById } = require('../models/tacheModel');
 
 
 router.get('/admintaches',function(req,res){
@@ -179,5 +180,18 @@ router.get("/deleteTask/:id",async function(req,res){
 })
 router.get("/a",function(req,res){
   res.render("pages/page")
+})
+router.get("/consulterGroupe/:id",async(req,res)=>{
+  const currentGroupe=await Groupe.findById(req.params.id)
+  console.log("this is the model of the groupe you need to find",currentGroupe)
+  const groupeMember = currentGroupe.groupeMember
+  console.log(groupeMember.length)
+  let userList = []
+   for(let i = 0;i<groupeMember.length;i++){
+     let user = await User.findById(currentGroupe.groupeMember[i]);
+     userList.push(user)
+   }
+   console.log(userList);
+   res.render("pages/listGroupe",{"userList":userList})
 })
 module.exports = router;

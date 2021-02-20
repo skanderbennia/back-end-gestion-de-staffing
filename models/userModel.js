@@ -67,6 +67,10 @@ const userSchema = mongoose.Schema({
         type:String,
         enum:['user','admin'],
         default :'user'
+    },
+    groupe:{
+        type:String,
+        default:"vide"
     }
     //im making test here but this schema need to be heavy
 
