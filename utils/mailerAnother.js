@@ -24,7 +24,7 @@ const sendMail =async(email,cb)=>{
     to: email, // list of receivers
     subject: "Hello ✔", // Subject line
     text: "Hello mister you did register you account in our webapplication", // plain text body
-    html: "<b>ya ta7an</b>", // html body
+    html: "<b>Hello mister you did regiester your account in our webapplication</b>", // html body
   },function(err,data){
        if(err){
              cb(err,null);
